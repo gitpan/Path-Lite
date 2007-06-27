@@ -1,0 +1,23 @@
+---
+name: Path-Lite
+version: 0.01
+author:
+  - 'Robert Krimen <rkrimen@cpan.org>'
+abstract: A lightweight but featureful class for UNIX-style path manipulation.
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
+requires:
+  Carp: 0
+  Scalar::Util: 0
+build_requires:
+  JSON: 0
+  Test::More: 0
+provides:
+  Path::Lite:
+    file: lib/Path/Lite.pm
+    version: 0.01
+generated_by: Module::Build version 0.2808
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2

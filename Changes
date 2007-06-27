@@ -1,0 +1,10 @@
+0.01 Tuesday June 26 19:03:31 PDT 2007:
+- Added testing and documentation
+- Wrote Set_test and Set_check testing routines
+- Added 'to_branch' and 'to_tree'
+
+0.01 Thursday June 14 21:06:06 PDT 2007:
+- Added some documentation
+
+0.01 June 2007:
+- Initial release

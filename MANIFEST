@@ -1,0 +1,12 @@
+Build.PL
+Changes
+lib/Path/Lite.pm
+MANIFEST
+META.yml			# Will be created by "make dist"
+README
+t/00-load.t
+t/01-Path-Lite.t
+t/boilerplate.t
+t/pod-coverage.t
+t/pod.t
+Makefile.PL
