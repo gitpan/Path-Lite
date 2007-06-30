@@ -1,3 +1,13 @@
+TODO:
+
+0.03 Saturday June 30 09:27:01 PDT 2007:
+- Changed behavior of 'pop' to modify path AND return the last (popped) path part
+- Added testing
+
+0.02 Tuesday June 26 20:10:10 PDT 2007:
+- Added SYNOPSIS
+- Made Path::Class optional in Build.PL
+
 0.01 Tuesday June 26 19:03:31 PDT 2007:
 - Added testing and documentation
 - Wrote Set_test and Set_check testing routines

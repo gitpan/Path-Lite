@@ -9,16 +9,29 @@ Path::Lite - A lightweight but featureful class for UNIX-style path manipulation
 
 =head1 VERSION
 
-Version 0.01
+Version 0.03
+
+=head1 SYNOPSIS
+
+  use Path::Lite;
+
+  my $path = Path::Lite->new("/apple/banana");
+
+  # $parent is "/apple"
+  my $parent = $path->parent;
+
+  # $cherry is "/apple/banana/cherry.txt"
+  my $cherry = $path->child("cherry.txt");
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 
-use Exporter qw/import/;
-use Scalar::Util qw(blessed);
+use Exporter();
+our @ISA = qw/Exporter/;
+use Scalar::Util qw/blessed/;
 use Carp;
-our @EXPORT_OK = qw(path);
+our @EXPORT_OK = qw/path/;
 
 use overload
 	'""' => 'get',
@@ -292,6 +305,26 @@ sub child {
 
 =item $path->pop( <count> )
 
+Modify $path by removing <count> parts from the end of $path
+
+Returns the removed path as a C<Path::Lite> object
+
+=cut
+
+sub pop {
+	my $self = shift;
+	my $count = 1;
+	$count = shift @_ if @_;
+	my @popped;
+	while (! $self->is_empty && $count--) {
+		$$self =~ s/(^|^\/|\/)([^\/]+)$//;
+		$$self = $1 if $1 && ! length $$self;
+		my $popped = $2;
+		CORE::unshift(@popped, $popped) if $popped;
+	}
+	return __PACKAGE__->new(join '/', @popped);
+}
+
 =item $path->up( <count> )
 
 Modify $path by removing <count> parts from the end of $path
@@ -300,16 +333,16 @@ Returns $path
 
 =cut
 
-sub pop {
+sub up {
 	my $self = shift;
 	my $count = 1;
 	$count = shift @_ if @_;
 	while (! $self->is_empty && $count--) {
-		$$self =~ s/\/[^\/]+$//;
+		$$self =~ s/(^|^\/|\/)([^\/]+)$//;
+		$$self = $1 if $1 && ! length $$self;
 	}
 	return $self;
 }
-for (qw(up)) { no strict 'refs'; *$_ = \&pop }
 
 =item $path->parent( <count> )
 
@@ -322,7 +355,7 @@ Returns the new parent path
 sub parent {
 	my $self = shift;
 	my $parent = $self->clone;
-	return $parent->pop(1, @_);
+	return $parent->up(1, @_);
 }
 
 =item $path->file

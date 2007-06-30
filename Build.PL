@@ -15,6 +15,9 @@ my $builder = Module::Build->new(
     	'Scalar::Util' => 0,
     	'Carp' => 0,
     },
+    optional => {
+    	'Path::Class' => 0,
+    },
     add_to_cleanup      => [ 'Path-Lite-*' ],
     create_makefile_pl => 'traditional',
 );
