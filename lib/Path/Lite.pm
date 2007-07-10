@@ -9,7 +9,7 @@ Path::Lite - A lightweight but featureful class for UNIX-style path manipulation
 
 =head1 VERSION
 
-Version 0.03
+Version 0.05
 
 =head1 SYNOPSIS
 
@@ -25,13 +25,15 @@ Version 0.03
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.05';
 
-use Exporter();
-our @ISA = qw/Exporter/;
+use Sub::Exporter -setup => {
+	exports => [ path => sub { sub {
+		return __PACKAGE__->new(@_)
+	} } ],
+};
 use Scalar::Util qw/blessed/;
 use Carp;
-our @EXPORT_OK = qw/path/;
 
 use overload
 	'""' => 'get',
@@ -68,15 +70,6 @@ Create a new C<Path::Lite> object using <path> or by joining each <part> with "/
 Returns the new C<Path::Lite> object
 
 =cut
-
-=item path
-
-=cut
-
-sub path {
-#	return scalar $_[0]->get if 1 == @_ && blessed $_[0] && $_[0]->isa("Path::Lite");
-	return __PACKAGE__->new(@_)
-}
 
 =item $path->clone
 
@@ -255,6 +248,8 @@ sub last {
 	return pop @path;
 }
 
+=item path
+
 =item $path->get
 
 =item $path->stringify
@@ -270,7 +265,7 @@ sub get {
 	my $self = shift;
 	return $$self;
 }
-for (qw(stringify)) { no strict 'refs'; *$_ = \&get }
+for (qw(path stringify)) { no strict 'refs'; *$_ = \&get }
 
 =item $path->push( <part>, [ <part>, ..., <part> ] )
 
@@ -313,14 +308,23 @@ Returns the removed path as a C<Path::Lite> object
 
 sub pop {
 	my $self = shift;
+	return __PACKAGE__->new('') if $self->is_empty || $self->is_root;
 	my $count = 1;
 	$count = shift @_ if @_;
 	my @popped;
-	while (! $self->is_empty && $count--) {
-		$$self =~ s/(^|^\/|\/)([^\/]+)$//;
-		$$self = $1 if $1 && ! length $$self;
-		my $popped = $2;
-		CORE::unshift(@popped, $popped) if $popped;
+
+	while ($count--) {
+		if ($$self =~ s/(.?)([^\/]+)$//) {
+			my $popped = $2;
+			CORE::unshift(@popped, $popped) if $popped;
+			if ($1 && ! length $$self) {
+				$$self = $1;
+				last;
+			}
+			elsif (! $$self) {
+				last;
+			}
+		}
 	}
 	return __PACKAGE__->new(join '/', @popped);
 }
@@ -335,11 +339,19 @@ Returns $path
 
 sub up {
 	my $self = shift;
+	return $self if $self->is_empty || $self->is_root;
 	my $count = 1;
 	$count = shift @_ if @_;
 	while (! $self->is_empty && $count--) {
-		$$self =~ s/(^|^\/|\/)([^\/]+)$//;
-		$$self = $1 if $1 && ! length $$self;
+		if ($$self =~ s/(^|^\/|\/)([^\/]+)$//) {
+			if ($1 && ! length $$self) {
+				$$self = $1;
+				last;
+			}
+			elsif (! $$self) {
+				last;
+			}
+		}
 	}
 	return $self;
 }

@@ -6,8 +6,9 @@ WriteMakefile
           'VERSION_FROM' => 'lib/Path/Lite.pm',
           'PREREQ_PM' => {
                            'Carp' => '0',
-                           'JSON' => '0',
                            'Scalar::Util' => '0',
+                           'Sub::Exporter' => '0',
+                           'Test::Lazy' => '0',
                            'Test::More' => '0'
                          },
           'INSTALLDIRS' => 'site',
