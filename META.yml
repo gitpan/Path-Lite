@@ -1,6 +1,6 @@
 ---
 name: Path-Lite
-version: 0.05
+version: 0.06
 author:
   - 'Robert Krimen <rkrimen@cpan.org>'
 abstract: A lightweight but featureful class for UNIX-style path manipulation.
@@ -18,7 +18,7 @@ build_requires:
 provides:
   Path::Lite:
     file: lib/Path/Lite.pm
-    version: 0.05
+    version: 0.06
 generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

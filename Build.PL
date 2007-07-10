@@ -24,4 +24,15 @@ my $builder = Module::Build->new(
     create_makefile_pl => 'traditional',
 );
 
+warn <<_END_;
+
+**********************************************************************
+***                                                                ***
+*** Path::Lite is deprecated, please switch to Path::Abstract ASAP ***
+***                                                                ***
+**********************************************************************
+
+
+_END_
+
 $builder->create_build_script();
