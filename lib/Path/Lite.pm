@@ -9,11 +9,12 @@ Path::Lite - A lightweight but featureful class for UNIX-style path manipulation
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =head1 NOTE
 
 The functionality this package provides is now in Path::Abstract
+
 Please switch to Path::Abstract ASAP
 
 If you would like/need this namespace, please contact the author.
@@ -32,7 +33,7 @@ If you would like/need this namespace, please contact the author.
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Sub::Exporter -setup => {
 	exports => [ path => sub { sub {
